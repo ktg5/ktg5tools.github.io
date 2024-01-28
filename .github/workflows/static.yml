@@ -43,14 +43,13 @@ jobs:
       - name: Run "build.js"
         run: npm start
 
-      # Finish, upload & deploy
+      # Upload & deploy
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload output div made by the Node script
-          name: Website complete build
           path: 'output/'
       - name: Deploy to GitHub Pages
         id: deployment
