@@ -29,10 +29,18 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+
       # Setup NPM & Node.js
       - name: Setup Node.js environment
         uses: actions/setup-node@v4.0.1
-      # Finish and deploy
+      # Install NPM modules included with the repo
+      - name: Install NPM Modules
+        uses: npm install
+      # Run the "build.js" script through our newly acquired Node.js environment.
+      - name: Run "build.js"
+        run: npm start
+
+      # Finish, upload & deploy
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Pages
@@ -40,8 +48,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: '.'
+          # Upload output div made by the Node script
+          path: './output/'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

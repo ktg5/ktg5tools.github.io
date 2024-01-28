@@ -1,0 +1,23 @@
+{
+  "name": "tools.ktg5.online",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build.js",
+  "scripts": {
+    "start": "node build.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ktg5/ktg5tools.github.io.git"
+  },
+  "author": "ktg5",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ktg5/ktg5tools.github.io/issues"
+  },
+  "homepage": "https://github.com/ktg5/ktg5tools.github.io#readme",
+  "dependencies": {
+    "fs-extra": "^11.1.1"
+  }
+}
