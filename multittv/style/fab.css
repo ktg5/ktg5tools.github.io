@@ -1,0 +1,14 @@
+i.fa-solid.fa-square-plus {
+    position: relative;
+    width: calc(var(--menu-icon-size) + 28px);
+    height: calc(var(--menu-icon-size) + 10px);
+    font-size: calc(var(--menu-icon-size) + 10px);
+}
+
+i.fa-solid.fa-screwdriver-wrench {
+    margin: 5px;
+}
+
+menu.left[case="closed"] i.fa-solid.fa-screwdriver-wrench {
+    margin: 0;
+}

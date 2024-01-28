@@ -1,0 +1,125 @@
+/* base */
+.clwindow-container.inactive {
+    display: none;
+}
+
+.clwindow-container .clwindow {
+    background: #1d1d1d;
+    color: white;
+    width: fit-content;
+    min-width: 40rem;
+    max-width: 50rem;
+    height: fit-content;
+    position: absolute;
+    margin: auto;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    animation: clWindowFadeIn .5s cubic-bezier(0, 0, 0.1, 1);
+    transition: all .25s;
+}
+
+.clwindow-container::after {
+    content: '';
+    background: rgba(0, 0, 0, 0.5);
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    margin: auto;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+    z-index: 5;
+}
+
+.clwindow {
+    font-family: 'JetBrains Mono';
+    border: 4px solid #9d9d9d;
+}
+
+
+/* tip */
+.clwindow .window-tip {
+    background: var(--clwindow-background);
+    height: 26px;
+    width: 100%;
+    border-bottom: 4px solid #9d9d9d;
+}
+
+.clwindow .window-tip text {
+    font-family: 'JetBrains Mono';
+    position: relative;
+    top: 2px;
+    left: 10px;
+}
+
+
+/* content */
+.clwindow .window-content {
+    padding: 15px;
+    margin-bottom: 2rem;
+}
+
+.window-content h1 {
+    margin-top: 0;
+}
+
+
+/* input */
+input.window-raw-input {
+    display: block;
+    width: 12rem;
+    font-size: 16px;
+    text-align: right;
+    margin: 10px auto;
+}
+
+
+/* window buttons */
+.clwindow .window-buttons {
+    position: absolute;
+    margin: auto;
+    right: 8px;
+    bottom: 8px;
+    z-index: 10;
+}
+
+.clwindow .window-buttons button {
+    font-family: 'JetBrains Mono';
+    font-size: 16px;
+    background: #6d6d6d;
+    border: 3px solid rgb(0 0 0 / 35%);
+    color: white;
+}
+
+.clwindow .window-buttons button:hover {
+    background: #303030;
+    border: 3px solid rgb(140 140 140 / 35%);
+}
+
+
+/* bg effect */
+.clwindow .window-effect {
+    display: block;
+    background: #0000008f;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    margin: auto;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+    z-index: -1;
+}
+
+
+/* animation */
+/* fade in */
+@keyframes clWindowFadeIn {
+    0% {opacity: 0; top: 10rem;}
+    100% {opacity: 1; top: 0;}
+}

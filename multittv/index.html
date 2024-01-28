@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ktg5's MultiTTV</title>
+        <link rel="shortcut icon" type="image/png" href="https://ktg5.online/img/favicon.gif">
+        <script src="https://kit.fontawesome.com/8ab11290f8.js" crossorigin="anonymous"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=.9, autocorrect=off">
+
+        <link rel="stylesheet" type="text/css" href="style/main.css">
+        <link rel="stylesheet" type="text/css" href="style/fab.css">
+        <link rel="stylesheet" type="text/css" href="style/clwindow.css">
+
+        <script src="src/config.js"></script>
+        <script src="src/multittv.js"></script>
+        <script src="src/clwindow.js"></script>
+        <script class="clwindow-config">
+            document.documentElement.style.cssText = `--clwindow-background: linear-gradient(
+                90deg,
+                rgba(63, 218, 216, 1) 10%,
+                rgba(47, 201, 226, 1) 20%,
+                rgba(28, 127, 238, 1) 30%,
+                rgba(95, 21, 242, 1) 40%,
+                rgba(186, 12, 248, 1) 50%,
+                rgba(186, 12, 248, 1) 60%,
+                rgba(95, 21, 242, 1) 70%,
+                rgba(28, 127, 238, 1) 80%,
+                rgba(47, 201, 226, 1) 90%,
+                rgba(63, 218, 216, 1) 100%
+            );`
+            var storageKey = 'multittv-settings';
+        </script>
+        <script src="https://player.twitch.tv/js/embed/v1.js"></script>
+
+        <meta property="og:title" content="ktg5's MultiTTV">
+        <meta property="og:description" content="A Multi-Twitch Channel website that is easy to use, and UI-rich.">
+        <meta property="og:image" content="img/logo-r1.png">
+        <meta content="#4975FF" data-react-helmet="true" name="theme-color">
+
+        <!-- swap when testing or not -->
+        <script>
+            var AuthLink = config.TwitchAuthLink;
+            var AuthLink = config.TestingAuthLink;
+        </script>
+    </head>
+
+
+
+    <body>
+        <!-- loading thingy -->
+        <div class="loading-thingy">
+            <content>loading MultiTTv...</content>
+        </div>
+        <!-- clwindow -->
+        <div class="clwindow-container inactive"></div>
+        <!-- actual page -->
+        <container>
+            <div class="flex-container" style="display: flex;">
+                <!-- left menu (shows channels) -->
+                <menu class="left channels-menus" case="full">
+                    <element-container>
+                        <button class="menu-close">
+                            <div class="text">Collapse Menu</div>
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                        </button>
+
+                        <div class="menu-title">
+                            <i class="fa-solid fa-users-line"></i> <div class="text">Channels</div>
+                        </div>
+
+                        <div class="bottom-buttons">
+                            <button class="menu-button add">
+                                <i class="fa-solid fa-square-plus"></i> <div class="text">Add a Channel</div>
+                            </button>
+
+                            <button class="menu-button settings">
+                                <i class="fa-solid fa-screwdriver-wrench"></i> <div class="text">Settings</div>
+                            </button>
+                        </div>
+                    </element-container>
+                </menu>
+
+
+                <!-- channels -->
+                <div class="channels-container">
+                    <channels id="stream-insert"></channels>
+                </div>
+            </div>
+        </container>
+    </body>
+</html>
