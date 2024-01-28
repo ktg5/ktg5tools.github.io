@@ -56,6 +56,25 @@
     left: 10px;
 }
 
+.clwindow .window-tip button {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: none;
+    font-family: 'JetBrains Mono';
+    color: white;
+    top: 3px;
+    right: 10px;
+    cursor: pointer;
+    transition: all .15s;
+}
+
+.clwindow .window-tip button:hover {
+    background: black;
+    color: red;
+}
+
 
 /* content */
 .clwindow .window-content {
@@ -69,12 +88,28 @@
 
 
 /* input */
+.window-input {
+    width: fit-content;
+    margin: 10px auto;
+}
+
 input.window-raw-input {
+    font-family: 'JetBrains Mono';
     display: block;
-    width: 12rem;
+    background: black;
+    color: white;
+    max-width: 14rem;
     font-size: 16px;
     text-align: right;
-    margin: 10px auto;
+    padding: 6px;
+    margin: auto;
+    border-radius: 6px;
+}
+
+.window-input .window-warning {
+    margin-top: 8px;
+    font-size: 14px;
+    color: red;
 }
 
 
@@ -93,6 +128,7 @@ input.window-raw-input {
     background: #6d6d6d;
     border: 3px solid rgb(0 0 0 / 35%);
     color: white;
+    cursor: pointer;
 }
 
 .clwindow .window-buttons button:hover {

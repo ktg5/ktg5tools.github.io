@@ -1,0 +1,28 @@
+channels[amount="1"], channels[amount="2"] {
+    grid-template-columns: none;
+}
+
+channels[amount="3"] iframe:where(:last-child) {
+    width: 200%;
+}
+
+channels[amount="5"] iframe:where(:last-child) {
+    width: 200%;
+}
+
+channels[amount="7"], channels[amount="8"], channels[amount="9"] {
+    grid-template-columns: auto auto auto;
+}
+
+channels[amount="7"] iframe:where(:last-child) {
+    width: 300%;
+}
+
+channels[amount="8"] iframe:where(:nth-last-child(2)) {
+    width: 150%;
+}
+channels[amount="8"] iframe:where(:last-child) {
+    position: relative;
+    left: 50%;
+    width: 150%;
+}

@@ -29,14 +29,22 @@ function applyConfig() {
 
 // Add stream
 function addStream(name) {
+    // Make sure channel isn't already added
+    if (getStream(name)) {
+        return alert('You already have this channel added IDIOT!!!');
+    }
+    // Also make sure stream amount is not above 9
+    if (streams.length == 9) {
+        return alert('You can only have a maximum of 9 streams!');
+    }
     // Make iframe
     var stream = new Twitch.Player("stream-insert", {
         channel: `${name}`
     });
     // Add to channel list
-    document.querySelector('.menu-title').insertAdjacentHTML('afterend', 
+    document.querySelector('.menu-channels').insertAdjacentHTML('beforeend', 
     `
-    <button class="menu-button channel ${name}">
+    <button class="menu-button channel ${name.replace(/\d+/g, '')}">
         <img src="https://wapi.wizebot.tv/api/avatars/${name}/sized/300x300" class="icon">
         <div class="channel-details">
 
@@ -52,27 +60,44 @@ function addStream(name) {
     </button>
     `
     )
-    // Add event listerner for focusing
-    document.querySelector(`.menu-button.channel.${name}`).addEventListener('click', async () => {
+    // Add event listener for focusing
+    document.querySelector(`.menu-button.channel.${name.replace(/\d+/g, '')}`).addEventListener('click', async () => {
         console.log(`focus ${name}`);
     });
-    // finish
+    // Add event listener for closing the button
+    document.querySelector(`.menu-button.channel.${name.replace(/\d+/g, '')} .remove`).addEventListener('click', async () => {
+        removeStream(name);
+    });
+    // Add to channels list
     document.querySelector('channels').childNodes.forEach(element => {
         if (name == element.src.split('?channel=')[1].split('&')[0]) {
-            streams[streams.length] = {stream: stream, element: element, menubutton: document.querySelector(`.menu-button.channel.${name}`)};
+            streams[streams.length] = {name: name, index: streams.length, stream: stream, element: element, menubutton: document.querySelector(`.menu-button.channel.${name.replace(/\d+/g, '')}`)};
         }
     });
+    // Finish
     return console.log(`multittv: added stream`, stream);
 }
+// Add streamS
+function addStreams(streamList) {
+    if (Array.isArray(streamList)) {
+        var loopCount = 0;
+        var addLoop = setInterval(() => {
+            if (streamList.length == loopCount) {
+                clearInterval(addLoop);
+            } else {
+                addStream(streamList[loopCount]);
+                loopCount++;
+            }
+        }, 100);
+    } else {
+        console.error('THE LIST MUST BE A ARRAY DICK HEAD!!!!!!')
+    }
+}
 // Get stream
-function getStream(name) {
-    var result;
-    streams.forEach(stream => {
-        if (name == stream.stream.getChannel()) {
-            result = stream;
-        }
-    })
-    return result;
+function getStream(name) {  
+    var index = streams.findIndex((elmnt) => elmnt.name === name);
+    console.log(index, streams[index]);
+    return streams[index];
 }
 // Remove stream
 function removeStream(name) {
@@ -85,7 +110,7 @@ function removeStream(name) {
         stream.element.remove();
         stream.menubutton.remove();
         // Remove from streams list
-        streams.splice(stream, 1)
+        streams.splice(stream.index, 1)
         // finish
         return console.log(`multittv: removed stream`, stream);
     }
@@ -95,8 +120,23 @@ function removeAllStreams() {
     document.querySelectorAll('#stream-insert iframe').forEach(element => {
         var name = element.src.split('?channel=')[1].split('&')[0];
         element.remove();
-        document.querySelector(`.menu-button.channel.${name}`).remove();
+        document.querySelector(`.menu-button.channel.${name.replace(/\d+/g, '')}`).remove();
     });
+}
+// Add sample streams
+function sampleStreams() {
+    let streams = [
+        'ktg5_',
+        '1stpara',
+        'bobross',
+        'kaicenat',
+        'eslcs',
+        'shobuh',
+        'leekbeats',
+        'flexingseal',
+        'adultswimclassic',
+    ];
+    addStreams(streams);
 }
 
 // ON LOAD
@@ -160,8 +200,14 @@ window.onload = () => {
         }
     });
 
+    // Add event listener for adding channels
     document.querySelector('menu.left .menu-button.add').addEventListener('click', async () => {
         makeWindow('Add a Channel', 'Use the input box below to add a channel to watch, then click the button below that.', 'input', 'addStream($THISINPUT)');
+    });
+
+    // Add event listener for closing all channels
+    document.querySelector('.menu-button.removeall').addEventListener('click', async () => {
+        removeAllStreams();
     });
     
 
@@ -177,40 +223,50 @@ window.onload = () => {
 
 
     // Checkers
+    // Get amount of streams
+    setInterval(() => {
+        document.querySelector('#stream-insert').setAttribute('amount', document.querySelector('#stream-insert').childElementCount);
+    });
+    // Get stream info
     setInterval(() => {
         streams.forEach(stream => {
             // This is why we need user auth
             var channelName = stream.stream.getChannel();
-            const endpoint = `https://api.twitch.tv/helix/streams?user_login=${channelName}`
-            let authorization = `Bearer ${userConfig.THISISYOURTWITCHACCOUNTINFORMATION_DONTSHARETHIS.accessToken}`;
-            let headers = {
-                authorization,
-                "Client-Id": 'jhcpxyjok7sx7d8ue6feytqh0m5ind',
-            };
-            fetch(endpoint, {
-                headers,
-            })
-            .then((res) => res.json())
-            // When we got the data
-            .then((data) => {
-                var streamData = data.data[0];
-
-                // If this iframe is live
-                if (streamData && streamData.type == 'live') {
-                    // Vars
-                    var viewerCount = streamData.viewer_count;
-                    var startTime = streamData.started_at;
-
-                    // Make sure opacity is not set
-                    stream.menubutton.querySelector('.bottom').style.opacity = '';
-                    // Get viewer count
-                    stream.menubutton.querySelector('.viewers').innerHTML = viewerCount;
-                    // Get time
-                    stream.menubutton.querySelector('.time').innerHTML = `(time)`;
-                } else {
-                    stream.menubutton.querySelector('.bottom').style.opacity = '0';
-                }
-            });
+            if (channelName) {
+                const endpoint = `https://api.twitch.tv/helix/streams?user_login=${channelName}`
+                let authorization = `Bearer ${userConfig.THISISYOURTWITCHACCOUNTINFORMATION_DONTSHARETHIS.accessToken}`;
+                let headers = {
+                    authorization,
+                    "Client-Id": 'jhcpxyjok7sx7d8ue6feytqh0m5ind',
+                };
+                fetch(endpoint, {
+                    headers,
+                })
+                .then((res) => res.json())
+                // When we got the data
+                .then((data) => {
+                    var streamData = data.data[0];
+    
+                    // If this iframe is live
+                    if (streamData && streamData.type == 'live') {
+                        // Vars
+                        var viewerCount = streamData.viewer_count;
+                        var startTime = new Date(streamData.started_at);
+                        var currentTime = new Date()
+                        var diffTime = new Date(currentTime - startTime);
+                        var diffHrs = Math.floor((diffTime % 86400000) / 3600000);
+    
+                        // Make sure opacity is not set
+                        stream.menubutton.querySelector('.bottom').style.opacity = '';
+                        // Get viewer count
+                        stream.menubutton.querySelector('.viewers').innerHTML = viewerCount;
+                        // Get time
+                        stream.menubutton.querySelector('.time').innerHTML = `${diffHrs}:${('0' + diffTime.getMinutes()).slice(-2)}:${('0' + diffTime.getSeconds()).slice(-2)}`;
+                    } else {
+                        stream.menubutton.querySelector('.bottom').style.opacity = '0';
+                    }
+                });    
+            }
         });
     }, 5000);
 }

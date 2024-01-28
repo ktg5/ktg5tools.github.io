@@ -113,7 +113,7 @@ menu.left .menu-button.channel {
 }
 menu.left .menu-close {
     padding: 5px;
-    width: var(--menu-full-size);
+    width: calc(var(--menu-full-size) - 4px);
 }
 
 menu.left .menu-close:hover, menu.left button:hover {
@@ -133,7 +133,7 @@ menu.left .menu-close i {
 }
 
 menu.left[case="closed"] .menu-close, menu.left[case="closed"] button, menu.left[case="closed"] .menu-button.add {
-    width: auto;
+    width: auto !important;
     height: auto !important;
     margin: auto;
 }
@@ -206,11 +206,11 @@ menu.left .text {
 
 menu.left[case="closed"] .text, menu.left[case="closed"] .menu-button.channel .channel-details {
     min-width: 0;
-    width: 0;
-    height: 0;
-    padding: 0;
-    margin: 0;
-    font-size: 0;
+    width: 0 !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: 0 !important;
     opacity: 0;
 }
 
@@ -290,6 +290,19 @@ menu.left[case="closed"] .menu-button.channel .icon {
     overflow: hidden;
 }
 
+menu.left .removeall {
+    width: calc(var(--menu-full-size) - 4px);
+    height: auto;
+    padding: calc(var(--menu-padding) / 4);
+}
+
+menu.left .removeall .text {
+    padding: 0;
+    margin: auto;
+    width: auto;
+    font-size: 16px;
+}
+
 menu.left .bottom-buttons {
     width: min-content;
     position: fixed;
@@ -297,7 +310,7 @@ menu.left .bottom-buttons {
 }
 
 menu.left .bottom-buttons .menu-button {
-    width: calc(var(--menu-full-size));
+    width: calc(var(--menu-full-size) - 4px);
     height: 100%;
     padding: calc(var(
     --menu-padding) / 4);
@@ -331,8 +344,9 @@ channels {
     position: relative;
     height: 100%;
     grid-template-columns: auto auto;
-    justify-content: center;
-    align-content: center;
 }
 channels iframe {
+    width: 100%;
+    height: 100%;
+    margin: auto;
 }

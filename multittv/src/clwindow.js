@@ -40,10 +40,17 @@ function makeWindow(title, content, type, params) {
             if (!params) alert('The "accept" clwindow type can\'t be used without a storage table, aka [(key), (value)]');
             console.log(params);
             if (params.includes('$THISINPUT')) {
-                var params = params.replace('$THISINPUT', `document.querySelector('.window-input input').value`);
+                var params = params.replace('$THISINPUT', `document.querySelector('.window-raw-input').value`);
             }
-            var exec = `${params};closeWindow();`;
+            var exec = `if (document.querySelector('.window-raw-input').value !== '') { ${params};closeWindow(); } else { clShowWarning(); }`;
 
+            clwindow.querySelector('.window-tip').insertAdjacentHTML('beforeend', 
+            `
+            <button onclick="closeWindow();">
+                [X]
+            </button>
+            `
+            )
             clwindow.querySelector('.window-content').insertAdjacentHTML('beforeend',
             `
             <div class='window-input'>
@@ -60,7 +67,7 @@ function makeWindow(title, content, type, params) {
                 if (key.key == 'Enter') {
                     eval(exec)
                 }
-            })
+            });
         break;
 
         case "tolink":
@@ -90,4 +97,15 @@ function closeWindow(thisEle) {
     clwindow.remove();
     // Make window inactive
     windowContainer.classList.add('inactive');
+}
+
+function clShowWarning() {
+    var clwindow = document.getElementsByClassName('clwindow')[0];
+    let text = `
+    <div class="window-warning">You must provide something in the input box above.</div>
+    `
+    if (clwindow.querySelector('.window-warning')) {
+        closeWindow.querySelector('.window-warning').innerHTML = text;
+    }
+    clwindow.querySelector('.window-input').insertAdjacentHTML('beforeend', text)
 }
