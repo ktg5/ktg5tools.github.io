@@ -71,7 +71,7 @@ function addStream(name) {
     // Add to channels list
     document.querySelector('channels').childNodes.forEach(element => {
         if (name == element.src.split('?channel=')[1].split('&')[0]) {
-            streams[streams.length] = {name: name, index: streams.length, stream: stream, element: element, menubutton: document.querySelector(`.menu-button.channel.${name.replace(/\d+/g, '')}`)};
+            streams[streams.length] = {name: name, stream: stream, element: element, menubutton: document.querySelector(`.menu-button.channel.${name.replace(/\d+/g, '')}`)};
         }
     });
     // Finish
@@ -96,7 +96,6 @@ function addStreams(streamList) {
 // Get stream
 function getStream(name) {  
     var index = streams.findIndex((elmnt) => elmnt.name === name);
-    console.log(index, streams[index]);
     return streams[index];
 }
 // Remove stream
@@ -110,7 +109,8 @@ function removeStream(name) {
         stream.element.remove();
         stream.menubutton.remove();
         // Remove from streams list
-        streams.splice(stream.index, 1)
+        var index = streams.findIndex((elmnt) => elmnt.name === name);
+        streams.splice(index, 1)
         // finish
         return console.log(`multittv: removed stream`, stream);
     }
@@ -122,6 +122,7 @@ function removeAllStreams() {
         element.remove();
         document.querySelector(`.menu-button.channel.${name.replace(/\d+/g, '')}`).remove();
     });
+    streams = [];
 }
 // Add sample streams
 function sampleStreams() {

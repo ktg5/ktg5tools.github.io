@@ -37,7 +37,7 @@ function makeWindow(title, content, type, params) {
         break;
 
         case "input":
-            if (!params) alert('The "accept" clwindow type can\'t be used without a storage table, aka [(key), (value)]');
+            if (!params) alert('The "input" clwindow type can\'t be used without a storage table, aka [(key), (value)]');
             console.log(params);
             if (params.includes('$THISINPUT')) {
                 var params = params.replace('$THISINPUT', `document.querySelector('.window-raw-input').value`);
@@ -63,6 +63,11 @@ function makeWindow(title, content, type, params) {
                 <button onclick="${exec}">Accept & Close</button>
             </div>
             `
+            window.addEventListener('keydown', key => {
+                if (key.key == 'Escape') {
+                    closeWindow();
+                }
+            });
             clwindow.addEventListener('keydown', key => {
                 if (key.key == 'Enter') {
                     eval(exec)
