@@ -47,6 +47,7 @@
     height: 26px;
     width: 100%;
     border-bottom: 4px solid #9d9d9d;
+    font-size:  16px !important;
 }
 
 .clwindow .window-tip text {
@@ -54,6 +55,15 @@
     position: relative;
     top: 2px;
     left: 10px;
+}
+
+.clwindow .window-tip i {
+    position: static !important;
+    margin: 0 !important;
+    margin-right: 4px !important;
+    width: auto !important;
+    height: auto !important;
+    font-size: 16px !important;
 }
 
 .clwindow .window-tip button {

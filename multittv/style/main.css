@@ -67,6 +67,16 @@ element-container {
 }
 
 
+.clwindow-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+}
+
+
 /* menus */
 menu {
     display: block;
@@ -89,6 +99,7 @@ menu.left {
     overflow: hidden;
     padding: var(--menu-padding);
     border-right: 5px solid var(--menu-border-color);
+    z-index: 10;
 }
 
 menu.left[case="full"] {
@@ -108,19 +119,35 @@ menu.left .menu-close, menu.left button {
     transition: all var(--menu-transition-time);
 }
 menu.left .menu-button.channel {
+    width: calc(var(--menu-full-size) - 4px);
     height: calc(var(--menu-icon-size) + 20px);
     padding: var(--menu-button-padding);
 }
-menu.left .menu-close {
-    padding: 5px;
-    width: calc(var(--menu-full-size) - 4px);
+.menu-close {
+    position: fixed !important;
+    background-color: var(--menu-background) !important;
+    background-image: radial-gradient(var(--menu-border-color) 2px, transparent 0) !important;
+    background-size: 10px 10px !important;
+    background-position: 0 2px !important;
+    border-radius: 0 5px 5px 0;
+    padding: 4px !important;
+    width: 20px !important;
+    height: 4rem !important;
+    left: calc(var(
+    --menu-full-size) + (var(--menu-padding) * 1.6));
+    cursor: pointer;
+    z-index: 10;
 }
 
-menu.left .menu-close:hover, menu.left button:hover {
+/* menu.left .menu-close:hover, */
+menu.left button:hover {
     background: rgba(255, 255, 255, 0.25);
 }
+menu.left button.focus {
+    background: rgb(255 0 0 / 25%);
+}
 
-menu.left .menu-close .text {
+/* menu.left .menu-close .text {
     font-size: 14px;
     text-align: right;
     padding-right: 10px;
@@ -130,17 +157,24 @@ menu.left .menu-close .text {
 
 menu.left .menu-close i {
     transition: all var(--menu-transition-time);
-}
+} */
 
-menu.left[case="closed"] .menu-close, menu.left[case="closed"] button, menu.left[case="closed"] .menu-button.add {
-    width: auto !important;
+/* menu.left[case="closed"] .menu-close,  */
+menu.left[case="closed"] button, 
+menu.left[case="closed"] .menu-button.add {
+    width: calc(var(--menu-small-icon-size) + 6px) !important;
     height: auto !important;
-    margin: auto;
+    margin: auto !important;
+}
+menu.left[case="closed"] .menu-close {
+    width: 20px !important;
+    height: 4rem !important;
+    left: calc(var(--menu-collapsed-size) + (var(--menu-padding) * 1.9));
 }
 menu.left[case="closed"] .menu-button.channel {
     padding: var(--menu-button-padding) 0;
 }
-menu.left[case="closed"] .menu-close {
+/* menu.left[case="closed"] .menu-close {
     left: 0;
 }
 
@@ -150,7 +184,7 @@ menu.left[case="closed"] .menu-close .text {
 
 menu.left[case="closed"] .menu-close i {
     rotate: 180deg;
-}
+} */
 
 
 menu.left i {
@@ -228,17 +262,23 @@ menu.left .menu-button {
     opacity: 0;
     display: block;
     position: relative;
+    background: var(--menu-background);
+    border: 4px solid var(--menu-background);
+    border-radius: 5px 0 0 5px;
     width: fit-content;
     height: auto;
-    bottom: calc(var(--menu-icon-size) - 2px);
-    left: 88%;
+    bottom: calc(var(--menu-icon-size) + 3px);
+    left: 86%;
     transition: all var(--menu-transition-time);
 }
 
 .menu-button.channel .remove i {
+    position: relative;
     width: 22px;
     height: 22px;
     font-size: 22px;
+    top: 1px;
+    right: -2px;
 }
 
 .menu-button.channel:hover .remove {
@@ -247,7 +287,6 @@ menu.left .menu-button {
 
 
 .menu-button.channel .channel-details {
-    width: 100%;
     height: -webkit-fill-available;
     padding-left: 14px;
     transition: all var(--menu-transition-time);
@@ -284,7 +323,7 @@ menu.left[case="closed"] .menu-button.channel .icon {
 }
 
 .channel-details .bottom {
-    max-width: calc(var(--menu-full-size) - (var(--menu-padding) * 2) - var(--menu-icon-size));
+    width: calc(var(--menu-full-size) - (var(--menu-padding) * 2.7) - var(--menu-icon-size));
     display: flex;
     white-space: nowrap;
     overflow: hidden;
@@ -320,9 +359,39 @@ menu.left .menu-button.add {
     display: inline-flex;
 }
 
+
 /* right */
 menu.right {
+    position: fixed;
+    width: var(--menu-full-size);
+    height: 100%;
+    top: 0;
+    right: 0;
+    z-index: 10;
+}
+menu.right[case="closed"] {
+    right: calc((var(--menu-full-size) * -1.001));
+}
 
+menu.right element-container {
+    height: 100%;
+}
+
+
+menu.right iframe {
+    height: 100%;
+}
+
+
+menu.right .menu-close {
+    border-radius: 5px 0 0 5px;
+    top: var(--menu-padding);
+    left: unset;
+    right: var(--menu-full-size);
+    transition: all var(--menu-transition-time);
+}
+menu.right[case="closed"] .menu-close {
+    right: 0;
 }
 
 
@@ -344,9 +413,67 @@ channels {
     position: relative;
     height: 100%;
     grid-template-columns: auto auto;
+    transition: all var(--menu-transition-time);
 }
-channels iframe {
+.channels-container.focus channels {
+    filter: brightness(0.2);
+    width: 60%;
+    height: 40%;
+    margin: auto;
+}
+
+#channel-focus {
+    display: block;
+    width: 100%;
+    height: 0;
+    transition: all var(--menu-transition-time);
+}
+.channels-container.focus #channel-focus {
+    height: 60%;
+}
+
+#channel-focus .remove {
+    display: none;
+}
+.channels-container.focus #channel-focus .remove {
+    opacity: 0;
+    display: block;
+    position: fixed;
+    padding: 5px;
+    font-family: 'Michroma';
+    font-size: 22px;
+    text-align: center;
+    width: -webkit-fill-available;
+    background: black;
+    transition: all var(--menu-transition-time);
+    cursor: pointer;
+    z-index: 1;
+}
+.channels-container.focus #channel-focus:hover .remove {
+    opacity: 1;
+}
+.channels-container.focus #channel-focus:hover .remove:hover {
+    background: #c11010;
+}
+
+.channels-container iframe {
     width: 100%;
     height: 100%;
     margin: auto;
+}
+
+
+/* credit box */
+.credit-box {
+    position: absolute;
+    font-family: 'JetBrains Mono';
+    font-size: 12px;
+    padding: 4px;
+    margin: 6px;
+    background-color: black;
+    color: var(--text-color);
+    bottom: 0;
+    right: 0;
+    opacity: 0.2;
+    pointer-events: none;
 }

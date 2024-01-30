@@ -5,10 +5,10 @@ i.fa-solid.fa-square-plus {
     font-size: calc(var(--menu-icon-size) + 10px);
 }
 
-i.fa-solid.fa-screwdriver-wrench {
+i.fa-solid.fa-screwdriver-wrench, i.fa-solid.fa-circle-info {
     margin: 5px;
 }
 
-menu.left[case="closed"] i.fa-solid.fa-screwdriver-wrench {
+menu.left[case="closed"] i.fa-solid.fa-screwdriver-wrench, menu.left[case="closed"] i.fa-solid.fa-circle-info {
     margin: 0;
 }

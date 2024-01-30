@@ -59,8 +59,8 @@
                 <menu class="left channels-menus" case="full">
                     <element-container>
                         <button class="menu-close">
-                            <div class="text">Collapse Menu</div>
-                            <i class="fa-solid fa-right-to-bracket"></i>
+                            <!-- <div class="text">Collapse Menu</div>
+                            <i class="fa-solid fa-right-to-bracket"></i> -->
                         </button>
 
                         <div class="menu-title">
@@ -70,7 +70,7 @@
                         <div class="menu-channels">
                             <button class="menu-button removeall">
                                 <i class="fa-solid fa-square-xmark" aria-hidden="true"></i>
-                                <div class="text">Remove all channels</div>
+                                <div class="text">Remove all Channels</div>
                             </button>
                         </div>
 
@@ -82,6 +82,10 @@
                             <button class="menu-button settings">
                                 <i class="fa-solid fa-screwdriver-wrench"></i> <div class="text">Settings</div>
                             </button>
+
+                            <button class="menu-button showwelcome" onclick="showInfoMessage()">
+                                <i class="fa-solid fa-circle-info"></i> <div class="text">Show Help</div>
+                            </button>
                         </div>
                     </element-container>
                 </menu>
@@ -89,9 +93,24 @@
 
                 <!-- channels -->
                 <div class="channels-container">
-                    <channels id="stream-insert"></channels>
+                    <div id="channel-focus">
+                        <div class="remove" onclick="removeFocused()">Unfocus this Stream</div>
+                    </div>
+                    <channels id="stream-insert" class=""></channels>
                 </div>
+
+
+                <!-- right menu (shows chats) -->
+                <menu class="right chats" case="closed">
+                    <element-container>
+                        <button class="menu-close"></button>
+                        <h1>still working on this lol</h1>
+                        this is where chats will be
+                    </element-container>
+                </menu>
             </div>
+
+            <div class="credit-box">MultiTTV v1 🌠 <a href="" style="color: aqua">ktg5.online</a></div>
         </container>
     </body>
 </html>
