@@ -8,11 +8,13 @@
 
         <link rel="stylesheet" type="text/css" href="style/main.css">
         <link rel="stylesheet" type="text/css" href="style/channelsizing.css">
+        <link rel="stylesheet" type="text/css" href="style/settings.css">
         <link rel="stylesheet" type="text/css" href="style/fab.css">
         <link rel="stylesheet" type="text/css" href="style/clwindow.css">
 
         <script src="src/config.js"></script>
         <script src="src/multittv.js"></script>
+        <script src="src/settings.js"></script>
         <script src="src/clwindow.js"></script>
         <script class="clwindow-config">
             document.documentElement.style.cssText = `--clwindow-background: linear-gradient(
@@ -48,10 +50,21 @@
     <body>
         <!-- loading thingy -->
         <div class="loading-thingy">
-            <content>loading MultiTTv...</content>
+            <content>loading MultiTTV...</content>
         </div>
         <!-- clwindow -->
         <div class="clwindow-container inactive"></div>
+        <!-- settings popup -->
+        <div id="settings-container" class="inactive">
+            <div id="settings-popup">
+                <button class="close" onclick="toggleSettings()"><i class="fa-solid fa-square-xmark"></i></button>
+                <h2><i class="fa-solid fa-screwdriver-wrench"></i> MultiTTV Settings</h2>
+
+                <div id="opinions-container">
+                    <div id="opinions"></div>
+                </div>
+            </div>
+        </div>
         <!-- actual page -->
         <container>
             <div class="flex-container" style="display: flex;">
@@ -104,13 +117,20 @@
                 <menu class="right chats" case="closed">
                     <element-container>
                         <button class="menu-close"></button>
-                        <h1>still working on this lol</h1>
-                        this is where chats will be
+                        <div class="menu-title">
+                            <i class="fa-solid fa-message"></i> <div class="text">Chat</div>
+                        </div>
+
+                        <div class="channel-selector-container">
+                            <div class="channel-selector"></div>
+                        </div>
+
+                        <div class="chat-insert"></div>
                     </element-container>
                 </menu>
             </div>
 
-            <div class="credit-box">MultiTTV v1 🌠 <a href="" style="color: aqua">ktg5.online</a></div>
+            <div class="credit-box">MultiTTV v1.1 🌠 <a href="" style="color: rgb(56, 128, 236)">ktg5.online</a></div>
         </container>
     </body>
 </html>

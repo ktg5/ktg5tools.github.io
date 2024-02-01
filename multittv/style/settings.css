@@ -1,0 +1,204 @@
+#settings-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 90;
+}
+#settings-container:after {
+    content: '';
+    background: rgba(0, 0, 0, 0.5);
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    margin: auto;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+    z-index: 5;
+}
+#settings-container.inactive {
+    display: none;
+}
+
+#settings-popup {
+    position: absolute;
+    margin: auto;
+    font-family: 'JetBrains Mono';
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+    background: var(--menu-background);
+    border: 5px solid var(--menu-border-color);
+    border-radius: 2rem;
+    width: 40rem;
+    height: 40rem;
+    z-index: 10;
+    transition: all var(--menu-transition-time);
+    animation: clWindowFadeIn .5s cubic-bezier(0, 0, 0.1, 1);
+}
+
+
+#settings-popup h2 {
+    position: inherit;
+    left: 15px;
+}
+
+
+#settings-popup #opinions {
+    position: absolute;
+    margin: auto 2rem;
+    height: fit-content;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+}
+
+
+#settings-popup button {
+    position: absolute;
+    height: 42px;
+    background: none;
+    color: var(--text-color);
+    padding: 0;
+    border: 0;
+}
+
+
+#settings-popup .close {
+    position: absolute;
+    height: 42px;
+    background: none;
+    color: var(--text-color);
+    font-size: 32px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    border: 0;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    transition: all var(--menu-transition-time);
+}
+#settings-popup .close:hover {
+    background: #ffffff3d;
+}
+
+
+#settings-popup #opinions-container {
+    display: block;
+    height: 100%;
+}
+
+
+#settings-popup .menu-option {
+    display: grid;
+    grid-template-columns: auto auto;
+    margin: .5em 0;
+    font-size: 20px;
+}
+
+#settings-popup .menu-option:where(:first-child) {
+    margin-top: 0;
+}
+
+#settings-popup .menu-option:where(:last-child) {
+    margin-bottom: 0;
+}
+
+#settings-popup .menu-option .menu-name {
+    max-width: 24em;
+}
+
+
+#settings-popup .menu-option select {
+    position: relative;
+    width: 8em;
+    left: calc(100% - 8em);
+}
+
+
+#settings-popup .menu-option-note {
+    position: relative;
+    bottom: 6px;
+    font-size: 12px;
+}
+
+
+#settings-popup .menu-toggle {
+    background: #2b2b2b;
+    border: 5px solid rgb(150 150 150 / 10%);
+    border-radius: 1em;
+    transition: all .25s;
+    position: relative;
+    cursor: pointer;
+    height: 14px;
+    width: 2em;
+    left: calc(100% - 2.75em);
+    box-sizing: unset;
+    padding-block: 0;
+    padding-inline: 0;
+    margin: auto 0;
+}
+
+#settings-popup .menu-toggle .light {
+    content: '';
+    display: block;
+    background: #8f8f8f;
+    border-radius: 1em;
+    width: auto;
+    height: 14px;
+    transition: all .25s;
+}
+
+#settings-popup .menu-toggle .light.undefined::after {
+    content: '';
+    display: block;
+    position: relative;
+    border: 5px solid;
+    border-radius: 1em;
+    width: 100%;
+    height: 14px;
+    top: -5px;
+    left: -5px;
+    transition: all .25s;
+    animation: alertButtonBorder 3s linear infinite;
+}
+
+#settings-popup .menu-toggle .light.true {
+    background: #04ff00;
+}
+
+#settings-popup .menu-toggle .light.false {
+    background: #ff0000;
+}
+
+
+#settings-popup .reset {
+    font-family: 'JetBrains Mono';
+    width: 100%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background var(--menu-transition-time);
+}
+#settings-popup .reset:hover {
+    background: #ff000087;
+}
+#settings-popup .reset.confirm {
+    animation: shake .5s;
+    background: #ff000087;
+    font-size: 18px;
+}
+
+
+/* animations */
+/* fade in */
+@keyframes fadeIn {
+    0% {opacity: 0; top: 10rem;}
+    100% {opacity: 1; top: 0;}
+}

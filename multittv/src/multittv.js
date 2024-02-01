@@ -1,9 +1,11 @@
 // Default config
 var def_config = {
-    channels: [],
+    pastStreams: [],
     THISISYOURTWITCHACCOUNTINFORMATION_DONTSHARETHIS: {},
     welcomeMessage: false,
     muteOnAdd: true,
+    pauseOnFocus: true,
+    openPastStreams: false
 }
 
 var storageKey = 'multittv-settings';
@@ -41,7 +43,7 @@ async function addStream(name) {
     }
     // Make iframe & apply settings
     var isMuted = false;
-    if (userConfig.muteOnAdd == true) {
+    if (userConfig.muteOnAdd !== false) {
         isMuted = true;
     }
     var stream = new Twitch.Player("stream-insert", {
@@ -89,9 +91,16 @@ async function addStream(name) {
                 if (document.querySelector('.menu-button.focus')) {
                     document.querySelector('.menu-button.focus').classList.remove('focus');
                 }
+                // Pause other streams if config is set
+                if (userConfig.pauseOnFocus !== false) {
+                    streams.forEach(stream => {
+                        stream.stream.pause();
+                    });
+                }
                 // Make Twitch embed
                 new Twitch.Player("channel-focus", {
-                    channel: `${name}`
+                    channel: `${name}`,
+                    muted: false
                 });
                 focusElmnt.querySelector('iframe').classList.add(name.replace(/\d+/g, ''))
                 // Add focus to menu button
@@ -104,12 +113,27 @@ async function addStream(name) {
         }
     });
 
+    // Add to chats list
+    document.querySelector('.channel-selector').insertAdjacentHTML('beforeend', `<button class="${name}">${name}</button>`);
+    document.querySelector(`.channel-selector button.${name}`).addEventListener('click', async () => {
+        changeChatFrame(name);
+    });
+    changeChatFrame(name);
+
     // Add to channels list
     document.querySelector('channels').childNodes.forEach(element => {
         if (name == element.src.split('?channel=')[1].split('&')[0]) {
             streams[streams.length] = {name: name, stream: stream, element: element, menubutton: document.querySelector(`.menu-button.channel.${name.replace(/\d+/g, '')}`)};
+            // Add to past streams
+            userConfig.pastStreams = [];
+            for (let i = 0; i < streams.length; i++) {
+                const element = streams[i];
+                userConfig.pastStreams[i] = element.name;
+            }
+            applyConfig();
         }
     });
+
     // Finish
     return console.log(`multittv: added stream`, stream);
 }
@@ -150,19 +174,35 @@ function removeStream(name) {
         }
         // Remove from streams list
         var index = streams.findIndex((elmnt) => elmnt.name === name);
-        streams.splice(index, 1)
+        streams.splice(index, 1);
+        // Remove from chat list
+        document.querySelector(`.channel-selector button.${name}`).remove();
+        // Remove from past streams list
+        var nameIndex = userConfig.pastStreams.findIndex((elmnt) => elmnt === name);
+        userConfig.pastStreams.splice(nameIndex, 1);
+        applyConfig();
         // finish
         return console.log(`multittv: removed stream`, stream);
     }
 }
 // Remove all streams
 function removeAllStreams() {
+    // Remove streams
     document.querySelectorAll('#stream-insert iframe').forEach(element => {
         var name = element.src.split('?channel=')[1].split('&')[0];
         element.remove();
         document.querySelector(`.menu-button.channel.${name.replace(/\d+/g, '')}`).remove();
     });
+    // Clear things
     streams = [];
+    userConfig.pastStreams = [];
+    applyConfig();
+    // Remove chats
+    document.querySelectorAll(`.channel-selector button`).forEach(span => {
+        span.remove();
+    });
+    // Finish
+    console.log('multittv: removed all streams', streams);
 }
 // Remove focused stream
 function removeFocused() {
@@ -179,6 +219,12 @@ function removeFocused() {
             }
             if (channelContainer) {
                 channelContainer.classList.remove('focus');
+            }
+            // Play other streams if config is set
+            if (userConfig.pauseOnFocus !== false) {
+                streams.forEach(stream => {
+                    stream.stream.play();
+                });
             }
         }
     }
@@ -199,6 +245,36 @@ function sampleStreams() {
     addStreams(streams);
 }
 
+// Add chat iframe
+function changeChatFrame(name) {
+    // Remove past chat frame
+    if (document.querySelector(`.channel-selector button.selected`)) {
+        document.querySelector(`.channel-selector button.selected`).classList.remove('selected');
+        document.querySelector('.chat-insert iframe').remove();
+    }
+
+    // Change selected chat opinion on right menu
+    var chatOpinion = document.querySelector(`.channel-selector button.${name}`);
+    if (chatOpinion) {
+        chatOpinion.classList.add('selected');
+
+        // Get parent url
+        var parentURL = window.location.origin.split('//')[1];
+        if (window.location.port !== '') {
+            parentURL = parentURL.split(`:${window.location.port}`)[0];
+        }
+
+        // Add chat iframe
+        document.querySelector('.chat-insert').innerHTML = `
+        <iframe src="https://www.twitch.tv/embed/${name}/chat?parent=${parentURL}" frameborder="0"></iframe>
+        `;
+    }
+}
+// Remove chat iframe
+function removeChatFrame() {
+    document.querySelector('.chat-insert iframe').remove();
+}
+
 // Show welcome message
 var helpTxt = `
 <li>To add a stream, use the "Add a Channel" button at the bottom left.</li>
@@ -216,6 +292,20 @@ function showInfoMessage() {
         helpTxt
     );
 }
+
+// Reset config
+function resetConfig() {
+    var accState = userConfig.THISISYOURTWITCHACCOUNTINFORMATION_DONTSHARETHIS.accessState;
+    var accToken = userConfig.THISISYOURTWITCHACCOUNTINFORMATION_DONTSHARETHIS.accessToken;
+    var welMessage = userConfig.welcomeMessage;
+
+    userConfig = def_config;
+    userConfig.THISISYOURTWITCHACCOUNTINFORMATION_DONTSHARETHIS.accessState = accState;
+    userConfig.THISISYOURTWITCHACCOUNTINFORMATION_DONTSHARETHIS.accessToken = accToken;
+    userConfig.welcomeMessage = welMessage;
+    applyConfig();
+}
+
 
 // ON LOAD
 window.onload = () => {
@@ -270,17 +360,22 @@ window.onload = () => {
             userConfig.THISISYOURTWITCHACCOUNTINFORMATION_DONTSHARETHIS.accessState = window.location.hash.split('state=')[1].split('&')[0];
             applyConfig();
 
-            window.location.hash = '';
+            window.location.href = window.location.href.split('#')[0];
             window.location.reload();
         }
+    }
+
+    // Check if there were channels added in last session
+    if (userConfig.openPastStreams == true && userConfig.pastStreams) {
+        addStreams(userConfig.pastStreams);
     }
 
 
 
     
     // ######### Buttons & Menus #########
-    // Close menus
     // Left
+    // Close
     document.querySelector('menu.left .menu-close').addEventListener('click', async () => {
         if (document.querySelector('menu.left').getAttribute('case') == 'full') {
             document.querySelector('menu.left').setAttribute('case', 'closed');
@@ -293,16 +388,20 @@ window.onload = () => {
             applyConfig();
         }
     });
+    // Settings button
+    document.querySelector('menu.left .menu-button.settings').addEventListener('click', async () => {
+        toggleSettings();
+    });
+
     // Right
+    // Close
     document.querySelector('menu.right .menu-close').addEventListener('click', async () => {
         if (document.querySelector('menu.right').getAttribute('case') == 'full') {
             document.querySelector('menu.right').setAttribute('case', 'closed');
-            userConfig.collapsedMenu = true;
-            applyConfig();
         } else {
             document.querySelector('menu.left').setAttribute('case', 'closed');
             document.querySelector('menu.right').setAttribute('case', 'full');
-            userConfig.collapsedMenu = false;
+            userConfig.collapsedMenu = true;
             applyConfig();
         }
     });
@@ -338,7 +437,7 @@ window.onload = () => {
     setInterval(() => {
         streams.forEach(stream => {
             // This is why we need user auth
-            var channelName = stream.stream.getChannel();
+            var channelName = stream.name;
             if (channelName) {
                 const endpoint = `https://api.twitch.tv/helix/streams?user_login=${channelName}`
                 let authorization = `Bearer ${userConfig.THISISYOURTWITCHACCOUNTINFORMATION_DONTSHARETHIS.accessToken}`;

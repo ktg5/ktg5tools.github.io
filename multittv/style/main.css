@@ -2,7 +2,8 @@
 :root {
     --body-background: rgb(40 40 40);
     --text-color: white;
-    --menu-full-size: 16rem;
+    --menu-left-full-size: 16rem;
+    --menu-right-full-size: 20rem;
     --menu-collapsed-size: 34px;
     --menu-padding: 14px;
     --menu-background: #131313;
@@ -92,6 +93,109 @@ menu .menu-close, menu button {
     border: 0;
 }
 
+
+menu i {
+    width: var(--menu-icon-size);
+    height: var(--menu-icon-size);
+    font-size: var(--menu-icon-size);
+    transition: all var(--menu-transition-time);
+}
+
+menu[case="closed"] i {
+    width: var(--menu-small-icon-size) !important;
+    height: var(--menu-small-icon-size) !important;
+    font-size: var(--menu-small-icon-size) !important;
+}
+
+
+menu .menu-title {
+    font-family: 'Michroma';
+    font-size: var(--menu-icon-size);
+    margin-bottom: 6rem;
+}
+menu[case="closed"] .menu-title {
+    font-size: calc(var(--menu-icon-size) - 10px);
+}
+
+menu .menu-title .text {
+    position: relative;
+    width: auto;
+    font-family: 'Michroma';
+    font-size: 28px;
+    top: -2px;
+}
+
+
+menu .text {
+    display: inline-block;
+    padding-left: 16px;
+    font-size: 18px;
+    font-family: 'JetBrains Mono';
+    text-align: left;
+    min-width: max-content;
+    width: 100%;
+    margin: auto 0;
+    transition: all var(--menu-transition-time);
+}
+
+menu[case="closed"] .text, menu[case="closed"] .menu-button.channel .channel-details {
+    min-width: 0;
+    width: 0 !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: 0 !important;
+    opacity: 0;
+}
+
+menu .menu-title i {
+    white-space: nowrap;
+}
+
+
+.menu-button.channel .remove {
+    opacity: 0;
+    display: block;
+    position: relative;
+    background: var(--menu-background);
+    border: 4px solid var(--menu-background);
+    border-radius: 5px 0 0 5px;
+    width: fit-content;
+    height: auto;
+    bottom: calc(var(--menu-icon-size) + 3px);
+    left: 86%;
+    transition: all var(--menu-transition-time);
+}
+
+.menu-button.channel .remove i {
+    position: relative;
+    width: 22px;
+    height: 22px;
+    font-size: 22px;
+    top: 1px;
+    right: -2px;
+}
+
+.menu-button.channel:hover .remove {
+    opacity: 1;
+}
+
+
+.menu-button.channel .channel-details {
+    height: -webkit-fill-available;
+    padding-left: 14px;
+    transition: all var(--menu-transition-time);
+    font-family: 'JetBrains Mono';
+    font-size: 18px;
+}
+
+menu .menu-button.channel .icon {
+    border-radius: 10px;
+    width: calc(var(--menu-icon-size) + 10px);
+    height: calc(var(--menu-icon-size) + 10px);
+    transition: all var(--menu-transition-time);
+}
+
 /* left */
 menu.left {
     background-color: var(--menu-background);
@@ -103,7 +207,7 @@ menu.left {
 }
 
 menu.left[case="full"] {
-    width: var(--menu-full-size);
+    width: var(--menu-left-full-size);
 }
 
 menu.left[case="closed"] {
@@ -119,7 +223,7 @@ menu.left .menu-close, menu.left button {
     transition: all var(--menu-transition-time);
 }
 menu.left .menu-button.channel {
-    width: calc(var(--menu-full-size) - 4px);
+    width: calc(var(--menu-left-full-size) - 4px);
     height: calc(var(--menu-icon-size) + 20px);
     padding: var(--menu-button-padding);
 }
@@ -134,7 +238,7 @@ menu.left .menu-button.channel {
     width: 20px !important;
     height: 4rem !important;
     left: calc(var(
-    --menu-full-size) + (var(--menu-padding) * 1.6));
+    --menu-left-full-size) + (var(--menu-padding) * 1.6));
     cursor: pointer;
     z-index: 10;
 }
@@ -187,20 +291,6 @@ menu.left[case="closed"] .menu-close i {
 } */
 
 
-menu.left i {
-    width: var(--menu-icon-size);
-    height: var(--menu-icon-size);
-    font-size: var(--menu-icon-size);
-    transition: all var(--menu-transition-time);
-}
-
-menu.left[case="closed"] i {
-    width: var(--menu-small-icon-size);
-    height: var(--menu-small-icon-size);
-    font-size: var(--menu-small-icon-size);
-}
-
-
 menu.left element-container {
     height: calc(100vh - (var(--menu-padding) * 2));
 }
@@ -211,102 +301,17 @@ menu.left div {
 }
 
 
-menu.left .menu-title {
-    font-family: 'Michroma';
-    font-size: var(--menu-icon-size);
-    margin-bottom: 6rem;
-}
-
-menu.left .menu-title .text {
-    position: relative;
-    width: auto;
-    font-family: 'Michroma';
-    font-size: 28px;
-    top: -2px;
-}
-
-
-menu.left .text {
-    display: inline-block;
-    padding-left: 16px;
-    font-size: 18px;
-    font-family: 'JetBrains Mono';
-    text-align: left;
-    min-width: max-content;
-    width: 100%;
-    margin: auto 0;
-    transition: all var(--menu-transition-time);
-}
-
-menu.left[case="closed"] .text, menu.left[case="closed"] .menu-button.channel .channel-details {
-    min-width: 0;
-    width: 0 !important;
-    height: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    font-size: 0 !important;
-    opacity: 0;
-}
-
-menu.left .menu-title i {
-    white-space: nowrap;
-}
-
-
 menu.left .menu-button {
     display: flex;
 }
 
-
-.menu-button.channel .remove {
-    opacity: 0;
-    display: block;
-    position: relative;
-    background: var(--menu-background);
-    border: 4px solid var(--menu-background);
-    border-radius: 5px 0 0 5px;
-    width: fit-content;
-    height: auto;
-    bottom: calc(var(--menu-icon-size) + 3px);
-    left: 86%;
-    transition: all var(--menu-transition-time);
-}
-
-.menu-button.channel .remove i {
-    position: relative;
-    width: 22px;
-    height: 22px;
-    font-size: 22px;
-    top: 1px;
-    right: -2px;
-}
-
-.menu-button.channel:hover .remove {
-    opacity: 1;
-}
-
-
-.menu-button.channel .channel-details {
-    height: -webkit-fill-available;
-    padding-left: 14px;
-    transition: all var(--menu-transition-time);
-    font-family: 'JetBrains Mono';
-    font-size: 18px;
-}
-
-menu .menu-button.channel .icon {
-    border-radius: 10px;
-    width: calc(var(--menu-icon-size) + 10px);
-    height: calc(var(--menu-icon-size) + 10px);
-    transition: all var(--menu-transition-time);
-}
 
 menu.left[case="closed"] .menu-button.channel .icon {
     width: calc(var(--menu-small-icon-size) + 4px);
     height: calc(var(--menu-small-icon-size) + 4px);
 }
 
-.channel-details .bottom .viewers::before {
+menu.left .channel-details .bottom .viewers::before {
     content: "";
     background-color: #f00;
     border-radius: 100%;
@@ -318,19 +323,19 @@ menu.left[case="closed"] .menu-button.channel .icon {
     margin-right: 8px;
 }
 
-.channel-details .bottom .spliter {
+menu.left .channel-details .bottom .spliter {
     padding: 0 10px;
 }
 
-.channel-details .bottom {
-    width: calc(var(--menu-full-size) - (var(--menu-padding) * 2.7) - var(--menu-icon-size));
+menu.left .channel-details .bottom {
+    width: calc(var(--menu-left-full-size) - (var(--menu-padding) * 2.7) - var(--menu-icon-size));
     display: flex;
     white-space: nowrap;
     overflow: hidden;
 }
 
 menu.left .removeall {
-    width: calc(var(--menu-full-size) - 4px);
+    width: calc(var(--menu-left-full-size) - 4px);
     height: auto;
     padding: calc(var(--menu-padding) / 4);
 }
@@ -349,7 +354,7 @@ menu.left .bottom-buttons {
 }
 
 menu.left .bottom-buttons .menu-button {
-    width: calc(var(--menu-full-size) - 4px);
+    width: calc(var(--menu-left-full-size) - 4px);
     height: 100%;
     padding: calc(var(
     --menu-padding) / 4);
@@ -363,23 +368,31 @@ menu.left .menu-button.add {
 /* right */
 menu.right {
     position: fixed;
-    width: var(--menu-full-size);
+    width: var(--menu-right-full-size);
     height: 100%;
+    background: var(--menu-background);
+    border-left: 5px solid var(--menu-border-color);
     top: 0;
     right: 0;
     z-index: 10;
 }
 menu.right[case="closed"] {
-    right: calc((var(--menu-full-size) * -1.001));
+    right: calc((var(--menu-right-full-size) * -1.018));
 }
 
 menu.right element-container {
+    display: flex;
+    flex-direction: column;
     height: 100%;
 }
 
 
-menu.right iframe {
-    height: 100%;
+menu.right .menu-title {
+    padding: var(--menu-padding) var(--menu-padding) 6px;
+    margin-bottom: 0;
+}
+menu.right .menu-title .text {
+    padding-left: 10px;
 }
 
 
@@ -387,11 +400,56 @@ menu.right .menu-close {
     border-radius: 5px 0 0 5px;
     top: var(--menu-padding);
     left: unset;
-    right: var(--menu-full-size);
+    right: var(--menu-right-full-size);
     transition: all var(--menu-transition-time);
 }
 menu.right[case="closed"] .menu-close {
     right: 0;
+}
+
+
+menu.right .channel-selector-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-color: rgb(255 255 255 / 50%) var(--menu-border-color);
+}
+menu.right .channel-selector-container::-webkit-scrollbar {
+    background: rgb(20, 20, 20);
+}
+menu.right .channel-selector-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+menu.right .channel-selector {
+    display: flex;
+    font-family: 'JetBrains Mono';
+    width: fit-content;
+    margin: auto;
+}
+
+
+menu.right .channel-selector button {
+    font-family: 'JetBrains Mono';
+    padding: 8px;
+    cursor: pointer;
+    transition: all var(--menu-transition-time);
+}
+menu.right .channel-selector button:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+menu.right .channel-selector button.selected {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+
+menu.right .chat-insert {
+    width: 100%;
+    height: 100%;
+}
+menu.right .chat-insert iframe {
+    width: 100%;
+    height: 100%;
 }
 
 
@@ -401,7 +459,7 @@ menu.right[case="closed"] .menu-close {
 }
 
 menu.left[case="full"] ~ .channels-container {
-    width: calc(100% - var(--menu-full-size));
+    width: calc(100% - var(--menu-left-full-size));
 }
 
 menu.left[case="closed"] ~ .channels-container {
@@ -417,7 +475,7 @@ channels {
 }
 .channels-container.focus channels {
     filter: brightness(0.2);
-    width: 60%;
+    width: 40%;
     height: 40%;
     margin: auto;
 }
