@@ -340,6 +340,8 @@ window.onload = () => {
                 <br>
                 We do not track you or save any bit of information about you when you visit MultiTTV.
                 <br>
+                If you are going to use chat within MultiTTV, make sure to allow cross-site cookies so that Twitch doesn't freak the hell out.
+                <br>
                 If you have any issues, <a href="${config.issuesPage}" target="_blank">report them here!</a>`,
                 'tolink',
                 AuthLink

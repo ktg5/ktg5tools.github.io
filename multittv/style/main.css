@@ -466,6 +466,10 @@ menu.left[case="closed"] ~ .channels-container {
     width: calc(100% - var(--menu-collapsed-size));
 }
 
+menu.right[case="full"] ~ .channels-container {
+    width: calc(100% - (var(--menu-collapsed-size)*2) - var(--menu-right-full-size));
+}
+
 channels {
     display: grid;
     position: relative;
@@ -475,8 +479,8 @@ channels {
 }
 .channels-container.focus channels {
     filter: brightness(0.2);
-    width: 40%;
-    height: 40%;
+    width: 30%;
+    height: 30%;
     margin: auto;
 }
 
@@ -487,7 +491,7 @@ channels {
     transition: all var(--menu-transition-time);
 }
 .channels-container.focus #channel-focus {
-    height: 60%;
+    height: 70%;
 }
 
 #channel-focus .remove {
