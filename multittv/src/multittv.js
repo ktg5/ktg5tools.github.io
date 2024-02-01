@@ -177,6 +177,8 @@ function removeStream(name) {
         streams.splice(index, 1);
         // Remove from chat list
         document.querySelector(`.channel-selector button.${name}`).remove();
+        // And remove chat frame if it matches with name
+        removeChatFrame(name);
         // Remove from past streams list
         var nameIndex = userConfig.pastStreams.findIndex((elmnt) => elmnt === name);
         userConfig.pastStreams.splice(nameIndex, 1);
@@ -201,6 +203,7 @@ function removeAllStreams() {
     document.querySelectorAll(`.channel-selector button`).forEach(span => {
         span.remove();
     });
+    removeChatFrame();
     // Finish
     console.log('multittv: removed all streams', streams);
 }
@@ -271,8 +274,17 @@ function changeChatFrame(name) {
     }
 }
 // Remove chat iframe
-function removeChatFrame() {
-    document.querySelector('.chat-insert iframe').remove();
+function removeChatFrame(name) {
+    if (name) {
+        if (document.querySelector(`.chat-insert iframe`).src.split(name)[1]) {
+            document.querySelector('.chat-insert iframe').remove();
+            if (streams.length >= 1) {
+                changeChatFrame(streams[streams.length - 1].name);
+            }
+        }
+    } else {
+        document.querySelector('.chat-insert iframe').remove();
+    }
 }
 
 // Show welcome message
@@ -361,7 +373,6 @@ window.onload = () => {
             applyConfig();
 
             window.location.href = window.location.href.split('#')[0];
-            window.location.reload();
         }
     }
 
